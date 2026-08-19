@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jelmy Field List — Lizards, Worms & Pigeons</title>
+  <style>
+    :root {
+      --bg: #f3f3f1;
+      --panel: #ffffff;
+      --panel-soft: #f6f6f5;
+      --line: #d9d7d2;
+      --text: #1e1d1b;
+      --muted: #5f5c57;
+      --primary: #2d3a34;
+      --primary-2: #53675b;
+      --accent: #b7a27f;
+      --accent-2: #efe4d2;
+      --warning: #d7a44b;
+      --shadow: 0 2px 10px rgba(24, 24, 24, 0.06);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    body {
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 18px 18px 42px;
+    }
+
+    .topbar {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      position: sticky;
+      top: 10px;
+      z-index: 20;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--primary);
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: white;
+      box-shadow: 0 12px 22px rgba(23, 78, 91, 0.22);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .nav a {
+      color: var(--muted);
+      font-size: 0.82rem;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      transition: 0.2s ease;
+    }
+
+    .nav a:hover {
+      color: var(--text);
+      border-color: var(--line);
+      background: #f6f9fb;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 20px;
+      margin-top: 18px;
+      align-items: center;
+    }
+
+    .hero-copy,
+    .hero-card,
+    .panel,
+    .sidebar {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+    }
+
+    .hero-copy {
+      padding: 24px 22px;
+      background: #fff;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: #f0efe9;
+      color: var(--primary);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+      color: var(--text);
+    }
+
+    .hero-copy p {
+      margin: 0 0 20px;
+      color: var(--muted);
+      max-width: 620px;
+      font-size: 0.97rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 8px;
+      padding: 11px 16px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+
+    .btn:hover { opacity: 0.92; }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: #f3f1ee;
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      max-width: 620px;
+    }
+
+    .stat {
+      background: var(--panel-soft);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px 14px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin-bottom: 3px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .hero-card {
+      padding: 18px;
+      background: linear-gradient(180deg, #ffffff 0%, #f3f9f7 100%);
+    }
+
+    .live-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .live-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 10px;
+      background: #ecfaf2;
+      color: #116a45;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+
+    .live-pill::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      background: #32c06f;
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: 0 0 0 5px rgba(50,192,111,0.15);
+    }
+
+    .hero-image {
+      width: 100%;
+      height: 420px;
+      border-radius: 18px;
+      object-fit: cover;
+      display: block;
+      border: 1px solid var(--line);
+    }
+
+    .hero-gallery {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .hero-gallery img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      display: block;
+    }
+
+    .capture-meter {
+      margin-top: 18px;
+    }
+
+    .capture-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .progress {
+      width: 100%;
+      height: 16px;
+      border-radius: 999px;
+      background: #ebf1f5;
+      border: 1px solid var(--line);
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      box-shadow: inset 0 0 10px rgba(255,255,255,0.2);
+      transition: width 0.8s ease;
+    }
+
+    .ticker {
+      margin-top: 24px;
+      background: linear-gradient(90deg, #eaf7f1, #f3f8ff);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .ticker marquee {
+      padding: 12px 0;
+      color: var(--primary);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+
+    .main-grid {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.7fr) minmax(280px, 0.7fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .panel {
+      padding: 20px 18px 18px;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .panel-header h2 {
+      margin: 0;
+      font-size: clamp(1.4rem, 2.2vw, 2rem);
+      letter-spacing: -0.05em;
+    }
+
+    .pill {
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #f7fafc;
+      color: var(--muted);
+      font-size: 0.72rem;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: #f9fbfc;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(23, 78, 91, 0.08);
+    }
+
+    .item-image {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      display: block;
+      border-bottom: 1px solid var(--line);
+      background: #edf3f8;
+    }
+
+    .na-image {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 280px;
+      background: linear-gradient(135deg, #eef3f6, #f6f9fa);
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      text-align: center;
+      padding: 12px;
+    }
+
+    .card-body {
+      padding: 14px 14px 12px;
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .card-tag {
+      color: var(--primary);
+      font-size: 0.72rem;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .price {
+      color: var(--primary);
+      font-weight: 800;
+      font-size: 0.98rem;
+    }
+
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 1.08rem;
+      letter-spacing: -0.03em;
+    }
+
+    .card p {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .card button {
+      width: 100%;
+      border: 1px solid rgba(23, 78, 91, 0.12);
+      background: #edf6f3;
+      color: var(--primary);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .sidebar {
+      padding: 20px 18px;
+      position: sticky;
+      top: 90px;
+    }
+
+    .sidebar h3 {
+      margin: 0 0 12px;
+      font-size: 1.5rem;
+      letter-spacing: -0.05em;
+    }
+
+    .cart-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 16px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: #f7fafc;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px 12px;
+    }
+
+    .cart-item strong {
+      display: block;
+      font-size: 0.9rem;
+    }
+
+    .cart-item small {
+      color: var(--muted);
+    }
+
+    .remove {
+      border: 1px solid rgba(208, 84, 84, 0.18);
+      background: rgba(208, 84, 84, 0.08);
+      color: #c14d4d;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .total {
+      text-align: right;
+      font-size: 1.18rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .checkout {
+      width: 100%;
+      border: none;
+      border-radius: 12px;
+      padding: 14px 12px;
+      cursor: pointer;
+      font-weight: 800;
+      background: linear-gradient(135deg, #f8c46a, #f2a65a);
+      color: #1f1f1f;
+    }
+
+    .info-panel {
+      margin-top: 18px;
+      background: #f7fafc;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .info-panel h4 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tags span {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 9px;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    footer {
+      margin-top: 26px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      padding: 18px 0 10px;
+    }
+
+    @media (max-width: 980px) {
+      .hero, .main-grid { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+    }
+
+    @media (max-width: 620px) {
+      .topbar { flex-direction: column; align-items: flex-start; }
+      .stats { grid-template-columns: 1fr; }
+      .hero-copy, .hero-card, .panel, .sidebar { border-radius: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">J</div>
+        <span>Jelmy</span>
+      </div>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#catalog">Catalog</a>
+        <a href="#report">Field report</a>
+        <a href="#cart">Cart</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow">Field report 067</div>
+        <h1>Jelmy field list: lizards, worms and pigeons.</h1>
+        <p>
+          A plain field record covering the brief with the strongest emphasis on lizards, worms, and pigeons, while keeping the rest of the listed items in the catalogue.
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" type="button" onclick="document.getElementById('catalog').scrollIntoView({behavior:'smooth'})">View catalogue</button>
+          <button class="btn btn-secondary" type="button" onclick="document.getElementById('report').scrollIntoView({behavior:'smooth'})">Live progress</button>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <strong id="stat-lizards">0%</strong>
+            <span>Lizards caught</span>
+          </div>
+          <div class="stat">
+            <strong>31</strong>
+            <span>Items listed</span>
+          </div>
+          <div class="stat">
+            <strong>1.0</strong>
+            <span>Field status</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-card" id="report">
+        <div class="live-header">
+          <span>Live progress</span>
+          <span class="live-pill">Jelmy catching</span>
+        </div>
+        <img class="hero-image" src="https://images.pexels.com/photos/30706641/pexels-photo-30706641.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Lizard close-up" />
+        <div class="hero-gallery" aria-label="Wildlife gallery">
+          <img src="https://images.pexels.com/photos/30706641/pexels-photo-30706641.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Lizard" />
+          <img src="https://images.pexels.com/photos/37440848/pexels-photo-37440848.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Pigeon close-up" />
+          <img src="https://images.pexels.com/photos/30706641/pexels-photo-30706641.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Lizard detail" />
+        </div>
+        <div class="capture-meter">
+          <div class="capture-row">
+            <span>Jelmy catching lizards</span>
+            <strong id="capture-percent">0%</strong>
+          </div>
+          <div class="progress" aria-label="Lizard capture progress">
+            <div class="progress-bar" id="capture-bar"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="ticker" aria-label="Status ticker">
+      <marquee scrollamount="6">toloric branch status // lizards tracked // McDonalds field noted // worms accounted // reindeer checked // peste control reviewed // yellowtonguejelmy2067 six seven</marquee>
+    </div>
+
+    <div class="main-grid">
+      <section class="panel" id="catalog">
+        <div class="panel-header">
+          <h2>Field inventory</h2>
+          <div class="pill">All listed items</div>
+        </div>
+        <div class="grid" id="catalog-grid"></div>
+      </section>
+
+      <aside class="sidebar" id="cart">
+        <h3>Your catch list</h3>
+        <ul class="cart-list" id="cart-list"></ul>
+        <div class="total">Total: $<span id="cart-total">0.00</span> AUD</div>
+        <button class="checkout" type="button" onclick="processCheckout()">Secure checkout</button>
+
+        <div class="info-panel">
+          <h4>Included keywords</h4>
+          <div class="tags">
+            <span>lizards</span>
+            <span>worms</span>
+            <span>pigeons</span>
+            <span>green tongue</span>
+            <span>yellow tongue</span>
+            <span>bobbit worm</span>
+            <span>67 oranges</span>
+            <span>acid</span>
+            <span>frogs</span>
+            <span>reindeer</span>
+            <span>arctic fox</span>
+            <span>Santa Claus</span>
+            <span>avocado</span>
+            <span>snakes</span>
+            <span>spiders</span>
+            <span>ants</span>
+            <span>eggs</span>
+            <span>cockroaches</span>
+            <span>pizza</span>
+            <span>tuna</span>
+            <span>sausage</span>
+            <span>Aerogard</span>
+            <span>pest control</span>
+            <span>gas</span>
+            <span>jelmy</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <footer>© 2026 Jelmy Field Catalog • Item list as supplied.</footer>
+  </div>
+
+  <script>
+    const inventory = [
+      { name: 'Green Tongue Lizard', category: 'Lizard', price: 49, description: 'Green tongue lizard from the field inventory.', image: 'https://images.pexels.com/photos/30706641/pexels-photo-30706641.jpeg?auto=compress&cs=tinysrgb&w=900' },
+      { name: 'Lizards', category: 'Wildlife', price: 42, description: 'General lizard category as listed.', image: 'https://images.pexels.com/photos/30706641/pexels-photo-30706641.jpeg?auto=compress&cs=tinysrgb&w=900' },
+      { name: 'Worms', category: 'Invertebrates', price: 12, description: 'Worm category listed in the field sheet.', image: 'worms.png' },
+      { name: 'Pigeon', category: 'Birds', price: 14, description: 'Pigeon item noted in the list.', image: 'https://images.pexels.com/photos/37440848/pexels-photo-37440848.jpeg?auto=compress&cs=tinysrgb&w=900' },
+      { name: 'Pigeons', category: 'Birds', price: 18, description: 'Additional pigeon reference to match the wildlife focus.', image: 'https://images.pexels.com/photos/37440848/pexels-photo-37440848.jpeg?auto=compress&cs=tinysrgb&w=900' },
+      { name: 'Bobbit Worm', category: 'Marine', price: 66, description: 'Bobbit worm item listed as part of the wildlife reference.', image: 'bobbit-worm.png' },
+      { name: 'Worm Detail', category: 'Invertebrates', price: 10, description: 'Worm close-up used to strengthen the field report focus.', image: 'worms.png' },
+      { name: 'Toxic Renford 67 Oranges', category: 'Produce', price: 19, description: 'Oranges noted in the field list as Toxic Renford 67.', image: 'https://images.pexels.com/photos/161559/background-bitter-breakfast-bright-161559.jpeg?auto=compress&cs=tinysrgb&w=900' },
+      { name: 'McDonalds', category: 'Food', price: 16, description: 'Fast food item listed in the original brief.', image: 'https://images.pexels.com/photos/1633578/pexels-photo-1633578.jpeg?auto=compress&cs=tinysrgb&w=900' },
+      { name: 'Toxic Acid', category: 'Chemicals', price: 28, description: 'Acid item listed in the chemical section.', image: 'tosic-acid.png' },
+      { name: 'Acid Dopey', category: 'Chemicals', price: 22, description: 'Reference item carried through the list with no exact image match.', image: 'tosic-acid.png' },
+      { name: 'Green Tongue Jelmy', category: 'Lizard', price: 52, description: 'Green tongue variation associated with Jelmy.', image: 'https://images.pexels.com/photos/30706641/pexels-photo-30706641.jpeg?auto=compress&cs=tinysrgb&w=900' },
+      { name: 'Yellow Tongue Lizard', category: 'Lizard', price: 48, description: 'Yellow tongue lizard entry listed separately.', image: 'https://images.pexels.com/photos/30706641/pexels-photo-30706641.jpeg?auto=compress&cs=tinysrgb&w=900' },
+      { name: 'Pigeons', category: 'Birds', price: 18, description: 'Additional pigeon reference to match the requested wildlife focus.', image: 'https://images.pexels.com/photos/37440848/pexels-photo-37440848.jpeg?auto=compress&cs=tinysrgb&w=900' },
+      { name: 'Frogs', category: 'Amphibians', price: 13, description: 'Frog entry from the inventory.', image: 'https://images.pexels.com/photos/29488909/pexels-photo-29488909.jpeg?auto=compress&cs=tinysrgb&w=900' },
+      { name: 'Reindeer', category: 'Wildlife', price: 86, description: 'Reindeer listed in the northern wildlife section.', image: 'https://images.pexels.com/photos/35478033/pexels-photo-35478033.jpeg?auto=compress&cs=tinysrgb&w=900' },
+      { name: 'Arctic Fox', category: 'Wildlife', price: 78, description: 'Arctic fox reference from the list.', image: 'https://images.pexels.com/photos/792381/pexels-photo-792381.jpeg?auto=compress&cs=tinysrgb&w=900' },
+      { name: 'Arctic Foxes', category: 'Wildlife', price: 80, description: 'Multiple arctic foxes included as an entry in the sheet.', image: 'https://images.pexels.com/photos/792381/pexels-photo-792381.jpeg?auto=compress&cs=tinysrgb&w=900' },
+      { name: 'Santa Claus', category: 'Holiday', price: 120, description: 'Holiday item included in the list.', image: 'https://images.pexels.com/photos/35605616/pexels-photo-35605616.jpeg?auto=compress&cs=tinysrgb&w=900' },
+      { name: 'Santa Clause', category: 'Holiday', price: 120, description: 'Variant spelling kept exactly as written in the brief.', image: 'https://images.pexels.com/photos/35605616/pexels-photo-35605616.jpeg?auto=compress&cs=tinysrgb&w=900' },
+      { name: 'Avocado', category: 'Food', price: 9, description: 'Avocado listed as a food item.', image: 'https://images.pexels.com/photos/557659/pexels-photo-557659.jpeg?auto=compress&cs=tinysrgb&w=900' },
+      { name: 'Snakes', category: 'Reptiles', price: 82, description: 'Snake category included in the field notes.', image: 'https://images.pexels.com/photos/23540967/pexels-photo-23540967.jpeg?auto=compress&cs=tinysrgb&w=900' },
+      { name: 'Spiders', category: 'Arachnids', price: 20, description: 'Spider item listed alongside the wildlife references.', image: 'https://images.pexels.com/photos/22880463/pexels-photo-22880463.jpeg?auto=compress&cs=tinysrgb&w=900' },
+      { name: 'Ants', category: 'Insects', price: 8, description: 'Ant item noted in the list.', image: 'https://images.pexels.com/photos/11942086/pexels-photo-11942086.jpeg?auto=compress&cs=tinysrgb&w=900' },
+      { name: 'Eggs', category: 'Food', price: 11, description: 'Egg item from the brief.', image: 'https://images.pexels.com/photos/162712/egg-white-food-protein-162712.jpeg?auto=compress&cs=tinysrgb&w=900' },
+      { name: 'Cockroaches', category: 'Pest control', price: 17, description: 'Cockroaches listed in the pest control section.', image: 'https://images.pexels.com/photos/19294665/pexels-photo-19294665.jpeg?auto=compress&cs=tinysrgb&w=900' },
+      { name: 'Idi', category: 'Misc', price: 5, description: 'Reference item with no clear visual match in the brief.', image: 'NA' },
+      { name: 'Cheese Pizza Block', category: 'Food', price: 26, description: 'Cheese pizza block item from the list.', image: 'https://images.pexels.com/photos/825661/pexels-photo-825661.jpeg?auto=compress&cs=tinysrgb&w=900' },
+      { name: '3 Cans of Tuna', category: 'Food', price: 12, description: 'Three cans of tuna listed as food stock.', image: 'NA' },
+      { name: 'Massive Sausage', category: 'Food', price: 22, description: 'Large sausage item included in the food section.', image: 'https://images.pexels.com/photos/26707587/pexels-photo-26707587.jpeg?auto=compress&cs=tinysrgb&w=900' },
+      { name: 'Sandwiches Food', category: 'Food', price: 18, description: 'Sandwich item recorded in the field list.', image: 'https://images.pexels.com/photos/23531331/pexels-photo-23531331.jpeg?auto=compress&cs=tinysrgb&w=900' },
+      { name: 'Aerogard Tropical Strength Repellant Aerosol', category: 'Pest control', price: 19, description: 'Aerogard aerosol listed for pest control.', image: 'aerogard.png' },
+      { name: 'Pest Control', category: 'Safety', price: 21, description: 'General pest control item from the brief.', image: 'NA' },
+      { name: 'Gas', category: 'Supplies', price: 15, description: 'Gas listed among the supply items.', image: 'NA' },
+      { name: 'Family Pack Gas', category: 'Supplies', price: 26, description: 'Family pack gas listed as a larger amount of the same supply.', image: 'NA' },
+      { name: 'Monk', category: 'Misc', price: 6, description: 'Entry kept as listed; no exact visual match available.', image: 'NA' },
+      { name: 'Jelmy', category: 'Brand', price: 0, description: 'Brand reference retained exactly as in the item list.', image: 'https://images.pexels.com/photos/30706641/pexels-photo-30706641.jpeg?auto=compress&cs=tinysrgb&w=900' },
+      { name: 'Yellowtonguejelmy2067', category: 'Code', price: 0, description: 'Field code reference included exactly as written.', image: 'NA' },
+      { name: 'Six Seven', category: 'Code', price: 0, description: 'Reference phrase included exactly from the brief.', image: 'NA' }
+    ];
+
+    const cart = [];
+    const grid = document.getElementById('catalog-grid');
+    const cartList = document.getElementById('cart-list');
+    const cartTotal = document.getElementById('cart-total');
+
+    function renderCatalog() {
+      grid.innerHTML = inventory.map(item => {
+        const imgHtml = item.image === 'NA'
+          ? '<div class="na-image">NA</div>'
+          : `<img class="item-image" src="${item.image}" alt="${item.name}" loading="lazy" />`;
+
+        return `
+          <article class="card">
+            ${imgHtml}
+            <div class="card-body">
+              <div class="card-top">
+                <span class="card-tag">${item.category}</span>
+                <span class="price">$${Number(item.price).toFixed(2)}</span>
+              </div>
+              <h3>${item.name}</h3>
+              <p>${item.description}</p>
+              <button type="button" onclick="addToCart('${item.name.replace(/'/g, "\\'")}', ${item.price})">Add to list</button>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    function addToCart(name, price) {
+      const item = cart.find(entry => entry.name === name);
+      if (item) {
+        item.qty += 1;
+      } else {
+        cart.push({ name, price, qty: 1 });
+      }
+      updateCart();
+    }
+
+    function removeFromCart(name) {
+      const index = cart.findIndex(item => item.name === name);
+      if (index >= 0) cart.splice(index, 1);
+      updateCart();
+    }
+
+    function updateCart() {
+      if (cart.length === 0) {
+        cartList.innerHTML = `
+          <li class="cart-item">
+            <div>
+              <strong>Nothing selected</strong>
+              <small>No items yet</small>
+            </div>
+            <button class="remove" type="button" aria-label="Empty">×</button>
+          </li>
+        `;
+        cartTotal.textContent = '0.00';
+        return;
+      }
+
+      cartList.innerHTML = cart.map(item => `
+        <li class="cart-item">
+          <div>
+            <strong>${item.name}</strong>
+            <small>${item.qty} × $${item.price.toFixed(2)}</small>
+          </div>
+          <button class="remove" type="button" aria-label="Remove ${item.name}" onclick="removeFromCart('${item.name.replace(/'/g, "\\'")}')">×</button>
+        </li>
+      `).join('');
+
+      const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+      cartTotal.textContent = total.toFixed(2);
+    }
+
+    function processCheckout() {
+      const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+      if (total === 0) {
+        alert('Add one or more items before checking out.');
+        return;
+      }
+      alert(`Secure checkout complete. Total: $${total.toFixed(2)} AUD.`);
+    }
+
+    let progress = 0;
+    const captureBar = document.getElementById('capture-bar');
+    const capturePercent = document.getElementById('capture-percent');
+    const statLizards = document.getElementById('stat-lizards');
+
+    function updateProgress() {
+      progress = (progress + 7) % 101;
+      captureBar.style.width = progress + '%';
+      capturePercent.textContent = progress + '%';
+      statLizards.textContent = progress + '%';
+    }
+
+    renderCatalog();
+    updateCart();
+    updateProgress();
+    setInterval(updateProgress, 1400);
+  </script>
+</body>
+</html>
